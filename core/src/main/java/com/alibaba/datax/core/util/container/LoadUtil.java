@@ -12,6 +12,7 @@ import com.alibaba.datax.core.taskgroup.runner.WriterRunner;
 import com.alibaba.datax.core.util.FrameworkErrorCode;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -199,4 +200,11 @@ public class LoadUtil {
 
         return jarLoader;
     }
+
+    public static void main(String[] args) {
+        Configuration configuration = Configuration.from(new File("D:\\Test\\test.json"));
+        System.out.print(String.format(pluginTypeNameFormat, "123", "234"));
+    }
+
+
 }

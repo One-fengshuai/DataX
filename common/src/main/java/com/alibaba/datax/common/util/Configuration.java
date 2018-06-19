@@ -1075,4 +1075,13 @@ public class Configuration {
 	public Set<String> getSecretKeyPathSet() {
 		return secretKeyPathSet;
 	}
+
+	public static void main(String[] args) {
+
+		Configuration configuration = Configuration.from(new File("D:\\Test\\test.json"));
+		//System.out.print(configuration.get("job.content[0].reader.parameter"));
+		System.out.print(configuration.get("job"));
+	}
+
+
 }

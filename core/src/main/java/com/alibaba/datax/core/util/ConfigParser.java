@@ -51,6 +51,7 @@ public final class ConfigParser {
             pluginList.add(postHandlerName);
         }
         try {
+            //加载插件的地方  存入Configuration [ result.set(String.format("plugin.%s.%s", type, pluginName),configuration.getInternal());]
             configuration.merge(parsePluginConfig(new ArrayList<String>(pluginList)), false);
         }catch (Exception e){
             //吞掉异常，保持log干净。这里message足够。

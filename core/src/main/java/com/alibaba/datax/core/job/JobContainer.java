@@ -107,7 +107,7 @@ public class JobContainer extends AbstractContainer {
             } else {
                 userConf = configuration.clone();
                 LOG.debug("jobContainer starts to do preHandle ...");
-                this.preHandle();
+                this.preHandle();//不配置会直接返回Null
 
                 LOG.debug("jobContainer starts to do init ...");
                 this.init();
@@ -299,7 +299,7 @@ public class JobContainer extends AbstractContainer {
 
         JobPluginCollector jobPluginCollector = new DefaultJobPluginCollector(
                 this.getContainerCommunicator());
-        //必须先Reader ，后Writer
+        //必须先Reader ，后Writer   此处加载 读取和写入的插件 根据json配置文件的信息
         this.jobReader = this.initJobReader(jobPluginCollector);
         this.jobWriter = this.initJobWriter(jobPluginCollector);
     }
@@ -504,7 +504,6 @@ public class JobContainer extends AbstractContainer {
         /**
          * 通过获取配置信息得到每个taskGroup需要运行哪些tasks任务
          */
-
         List<Configuration> taskGroupConfigs = JobAssignUtil.assignFairly(this.configuration,
                 this.needChannelNumber, channelsPerTaskGroup);
 
@@ -654,7 +653,7 @@ public class JobContainer extends AbstractContainer {
     private Reader.Job initJobReader(
             JobPluginCollector jobPluginCollector) {
         this.readerPluginName = this.configuration.getString(
-                CoreConstant.DATAX_JOB_CONTENT_READER_NAME);
+                CoreConstant.DATAX_JOB_CONTENT_READER_NAME);//job.content[0].reader.name  获取插件的名称
         classLoaderSwapper.setCurrentThreadClassLoader(LoadUtil.getJarLoader(
                 PluginType.READER, this.readerPluginName));
 
