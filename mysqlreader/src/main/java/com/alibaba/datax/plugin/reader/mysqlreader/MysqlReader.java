@@ -46,6 +46,7 @@ public class MysqlReader extends Reader {
 
         @Override
         public List<Configuration> split(int adviceNumber) {
+            //originalConfig是配置的数据源信息{"connection":[{"jdbcUrl":"jdbc:mysql://localhost:3306/datax?yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true","querySql":["select id,username,telephone from user;"]}],"fetchSize":-2147483648,"isTableMode":false,"password":"root123","tableNumber":0,"username":"root"}
             return this.commonRdbmsReaderJob.split(this.originalConfig, adviceNumber);
         }
 

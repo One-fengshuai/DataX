@@ -134,6 +134,7 @@ public class Engine {
         String jobIdString = cl.getOptionValue("jobid");
         RUNTIME_MODE = cl.getOptionValue("mode");
 
+        //关键的步骤 指定Job配置路径，ConfigParser会解析Job、Plugin、Core全部信息，并以Configuration返回
         Configuration configuration = ConfigParser.parse(jobPath);
 
         long jobId;
@@ -201,6 +202,7 @@ public class Engine {
     public static void main(String[] args) throws Exception {
         int exitCode = 0;
         try {
+            LOG.info("DATAX.HOME:"+System.getProperty("datax.home"));
             Engine.entry(args);
         } catch (Throwable e) {
             exitCode = 1;

@@ -31,6 +31,7 @@ public final class ReaderSplitUtil {
         String column = originalSliceConfig.getString(Key.COLUMN);
         String where = originalSliceConfig.getString(Key.WHERE, null);
 
+        //获取数据库的连接信息
         List<Object> conns = originalSliceConfig.getList(Constant.CONN_MARK, Object.class);
 
         List<Configuration> splittedConfigs = new ArrayList<Configuration>();

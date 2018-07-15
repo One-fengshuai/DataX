@@ -29,11 +29,11 @@ public class MemoryChannel extends Channel {
 
 	private ReentrantLock lock;
 
-	private Condition notInsufficient, notEmpty;
+	private Condition notInsufficient, notEmpty;//不充足的，不为空
 
 	public MemoryChannel(final Configuration configuration) {
 		super(configuration);
-		this.queue = new ArrayBlockingQueue<Record>(this.getCapacity());
+		this.queue = new ArrayBlockingQueue<Record>(this.getCapacity());//初始化队列的大小512
 		this.bufferSize = configuration.getInt(CoreConstant.DATAX_CORE_TRANSPORT_EXCHANGER_BUFFERSIZE);
 
 		lock = new ReentrantLock();
@@ -74,7 +74,7 @@ public class MemoryChannel extends Channel {
 			long startTime = System.nanoTime();
 			lock.lockInterruptibly();
 			int bytes = getRecordBytes(rs);
-			while (memoryBytes.get() + bytes > this.byteCapacity || rs.size() > this.queue.remainingCapacity()) {
+			while (memoryBytes.get() + bytes > this.byteCapacity || rs.size() > this.queue.remainingCapacity()) {//检查剩余可以插入的数量
 				notInsufficient.await(200L, TimeUnit.MILLISECONDS);
             }
 			this.queue.addAll(rs);

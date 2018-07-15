@@ -1,0 +1,86 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel":1
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "root123",
+            "connection": [
+              {
+                "querySql": [
+                  "select * from user;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://localhost:3306/datax"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://hadoop001:8020",
+            "fileType": "orc",
+            "path": "/user/hive/warehouse/mysql",
+            "fileName": "test01",
+            "column": [
+              {
+                "name": "col1",
+                "type": "STRING"
+              },
+              {
+                "name": "col2",
+                "type": "STRING"
+              },
+              {
+                "name": "col3",
+                "type": "STRING"
+              },
+              {
+                "name": "col4",
+                "type": "STRING"
+              },
+              {
+                "name": "col5",
+                "type": "STRING"
+              },
+              {
+                "name": "col6",
+                "type": "STRING"
+              },
+              {
+                "name": "col7",
+                "type": "STRING"
+              },
+              {
+                "name": "col8",
+                "type": "STRING"
+              },
+              {
+                "name": "col9",
+                "type": "STRING"
+              },
+              {
+                "name": "col10",
+                "type": "STRING"
+              }
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t",
+            "compress": "NONE"
+          }
+         }
+        }
+    ]
+  }
+
+
+}

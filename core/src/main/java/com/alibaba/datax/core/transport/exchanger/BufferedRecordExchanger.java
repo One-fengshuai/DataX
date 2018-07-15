@@ -90,6 +90,7 @@ public class BufferedRecordExchanger implements RecordSender, RecordReceiver {
 			return;
 		}
 
+		//bufferSize默认是32   如果大于32或者超过最大限制  则提交一个批次
 		boolean isFull = (this.bufferIndex >= this.bufferSize || this.memoryBytes.get() + record.getMemorySize() > this.byteCapacity);
 		if (isFull) {
 			flush();
@@ -105,7 +106,7 @@ public class BufferedRecordExchanger implements RecordSender, RecordReceiver {
 		if(shutdown){
 			throw DataXException.asDataXException(CommonErrorCode.SHUT_DOWN_TASK, "");
 		}
-		this.channel.pushAll(this.buffer);
+		this.channel.pushAll(this.buffer);//加入到arrayBlockQueue
 		this.buffer.clear();
 		this.bufferIndex = 0;
 		this.memoryBytes.set(0);

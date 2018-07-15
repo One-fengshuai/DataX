@@ -390,6 +390,7 @@ public class JobContainer extends AbstractContainer {
             this.needChannelNumber = 1;
         }
 
+        //具体执行任务切分的地方 setting.speed.channel
         List<Configuration> readerTaskConfigs = this
                 .doReaderSplit(this.needChannelNumber);
         int taskNumber = readerTaskConfigs.size();
@@ -785,6 +786,7 @@ public class JobContainer extends AbstractContainer {
         }
 
         List<Configuration> contentConfigs = new ArrayList<Configuration>();
+        //根据切分的规则生成各个任务的配置文件
         for (int i = 0; i < readerTasksConfigs.size(); i++) {
             Configuration taskConfig = Configuration.newDefault();
             taskConfig.set(CoreConstant.JOB_READER_NAME,

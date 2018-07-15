@@ -21,3 +21,44 @@ CREATE TABLE `user` (
   UNIQUE KEY `idx_username` (`username`) USING BTREE,
   UNIQUE KEY `idx_mail` (`mail`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+
+
+-- hive 创建外部表
+CREATE EXTERNAL TABLE mysql01(
+col1 STRING,
+col2 STRING,
+col3 STRING,
+col4 STRING,
+col5 STRING,
+col6 STRING,
+col7 STRING,
+col8 STRING,
+col9 STRING,
+col10 STRING
+) row format delimited fields terminated by '\t' stored AS orc
+location '/user/hive/warehouse/mysql';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
