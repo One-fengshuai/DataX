@@ -14,20 +14,20 @@ public class ClassSize {
     public static final int ARRAY;
     public static final int ARRAYLIST;
     static {
-        //only 64位
-        REFERENCE = 8;
+        //only 64位  (64位操作系统)
+        REFERENCE = 8;//引用类型实例变量
 
-        OBJECT = 2 * REFERENCE;
+        OBJECT = 2 * REFERENCE;//对象  16
 
-        ARRAY = align(3 * REFERENCE);
+        ARRAY = align(3 * REFERENCE);//数组 24
 
         // 16+8+24+16
         ARRAYLIST = align(OBJECT + align(REFERENCE) + align(ARRAY) +
-                (2 * Long.SIZE / Byte.SIZE));
+                (2 * Long.SIZE / Byte.SIZE));//arrayList  64
         // 8+64+8
         DefaultRecordHead = align(align(REFERENCE) + ClassSize.ARRAYLIST + 2 * Integer.SIZE / Byte.SIZE);
         //16+4
-        ColumnHead = align(2 * REFERENCE + Integer.SIZE / Byte.SIZE);
+        ColumnHead = align(2 * REFERENCE + Integer.SIZE / Byte.SIZE);//两个引用的大小  +  一个 int 要计算出  byte
     }
 
     public static int align(int num) {

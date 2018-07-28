@@ -36,6 +36,7 @@ public class MemoryChannel extends Channel {
 		this.queue = new ArrayBlockingQueue<Record>(this.getCapacity());//初始化队列的大小512
 		this.bufferSize = configuration.getInt(CoreConstant.DATAX_CORE_TRANSPORT_EXCHANGER_BUFFERSIZE);
 
+		//初始化锁和线程同步工具
 		lock = new ReentrantLock();
 		notInsufficient = lock.newCondition();
 		notEmpty = lock.newCondition();

@@ -26,7 +26,7 @@ public final class JobAssignUtil {
         Validate.isTrue(channelNumber > 0 && channelsPerTaskGroup > 0,
                 "每个channel的平均task数[averTaskPerChannel]，channel数目[channelNumber]，每个taskGroup的平均channel数[channelsPerTaskGroup]都应该为正数");
 
-        int taskGroupNumber = (int) Math.ceil(1.0 * channelNumber / channelsPerTaskGroup);
+        int taskGroupNumber = (int) Math.ceil(1.0 * channelNumber / channelsPerTaskGroup);// 返回大于或者等于指定表达式的最小整数，即向上取整
 
         Configuration aTaskConfig = contentConfig.get(0);
 

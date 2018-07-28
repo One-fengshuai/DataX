@@ -118,7 +118,7 @@ public class TaskGroupContainer extends AbstractContainer {
                     CoreConstant.DATAX_CORE_CONTAINER_TASK_FAILOVER_RETRYINTERVALINMSEC, 10000);
 
             long taskMaxWaitInMsec = this.configuration.getLong(CoreConstant.DATAX_CORE_CONTAINER_TASK_FAILOVER_MAXWAITINMSEC, 60000);
-            
+            //获取具体task的信息
             List<Configuration> taskConfigs = this.configuration
                     .getListConfiguration(CoreConstant.DATAX_JOB_CONTENT);
 
@@ -131,10 +131,11 @@ public class TaskGroupContainer extends AbstractContainer {
             LOG.info(String.format(
                     "taskGroupId=[%d] start [%d] channels for [%d] tasks.",
                     this.taskGroupId, channelNumber, taskCountInThisTaskGroup));
-            
+
+            //注册task信息
             this.containerCommunicator.registerCommunication(taskConfigs);
 
-            Map<Integer, Configuration> taskConfigMap = buildTaskConfigMap(taskConfigs); //taskId与task配置
+            Map<Integer, Configuration> taskConfigMap = buildTaskConfigMap(taskConfigs); //taskId与task配置,一个组内的任务都会分配taskId标示
             List<Configuration> taskQueue = buildRemainTasks(taskConfigs); //待运行task列表
             Map<Integer, TaskExecutor> taskFailedExecutorMap = new HashMap<Integer, TaskExecutor>(); //taskId与上次失败实例
             List<TaskExecutor> runTasks = new ArrayList<TaskExecutor>(channelNumber); //正在运行task
@@ -147,18 +148,18 @@ public class TaskGroupContainer extends AbstractContainer {
             	//1.判断task状态
             	boolean failedOrKilled = false;
             	Map<Integer, Communication> communicationMap = containerCommunicator.getCommunicationMap();
-            	for(Map.Entry<Integer, Communication> entry : communicationMap.entrySet()){
+            	for(Map.Entry<Integer, Communication> entry : communicationMap.entrySet()){//遍历获取所有的task
             		Integer taskId = entry.getKey();
             		Communication taskCommunication = entry.getValue();
-                    if(!taskCommunication.isFinished()){
+                    if(!taskCommunication.isFinished()){//判断任务是否已经完成
                         continue;
                     }
-                    TaskExecutor taskExecutor = removeTask(runTasks, taskId);
+                    TaskExecutor taskExecutor = removeTask(runTasks, taskId);//如果已经完成的任务，从正在运行的任务里面移除
 
                     //上面从runTasks里移除了，因此对应在monitor里移除
                     taskMonitor.removeTask(taskId);
 
-                    //失败，看task是否支持failover，重试次数未超过最大限制
+                    //失败，看task是否支持failover，重试次数未超过最大限制    重新加入任务列表
             		if(taskCommunication.getState() == State.FAILED){
                         taskFailedExecutorMap.put(taskId, taskExecutor);
             			if(taskExecutor.supportFailOver() && taskExecutor.getAttemptCount() < taskMaxRetryTimes){
@@ -229,8 +230,8 @@ public class TaskGroupContainer extends AbstractContainer {
                     taskStartTimeMap.put(taskId, System.currentTimeMillis());
                 	taskExecutor.doStart();//真正启动读取写入任务的地方
 
-                    iterator.remove();
-                    runTasks.add(taskExecutor);
+                    iterator.remove();//从等待运行移除
+                    runTasks.add(taskExecutor);//加入到正在运行
 
                     //上面，增加task到runTasks列表，因此在monitor里注册。
                     taskMonitor.registerTask(taskId, this.containerCommunicator.getCommunication(taskId));

@@ -122,7 +122,7 @@ public final class ConfigParser {
         Set<String> replicaCheckPluginSet = new HashSet<String>();
         int complete = 0;
         for (final String each : ConfigParser
-                .getDirAsList(CoreConstant.DATAX_PLUGIN_READER_HOME)) {
+                .getDirAsList(CoreConstant.DATAX_PLUGIN_READER_HOME)) {//DATAX_HOME/plugin/reader
             Configuration eachReaderConfig = ConfigParser.parseOnePluginConfig(each, "reader", replicaCheckPluginSet, wantPluginNames);
             if(eachReaderConfig!=null) {
                 configuration.merge(eachReaderConfig, true);
