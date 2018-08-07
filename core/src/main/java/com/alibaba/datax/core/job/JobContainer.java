@@ -397,6 +397,7 @@ public class JobContainer extends AbstractContainer {
         List<Configuration> writerTaskConfigs = this
                 .doWriterSplit(taskNumber);
 
+        //获取Transformer的定义  对Record进行处理
         List<Configuration> transformerList = this.configuration.getListConfiguration(CoreConstant.DATAX_JOB_CONTENT_TRANSFORMER);
 
         LOG.debug("transformer configuration: "+ JSON.toJSONString(transformerList));

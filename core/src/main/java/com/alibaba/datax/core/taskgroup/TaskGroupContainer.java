@@ -403,7 +403,7 @@ public class TaskGroupContainer extends AbstractContainer {
             this.channel.setCommunication(this.taskCommunication);
 
             /**
-             * 获取transformer的参数
+             * 获取transformer的参数  注册transformer
              */
 
             List<TransformerExecution> transformerInfoExecs = TransformerUtil.buildTransformerInfo(taskConfig);
@@ -479,6 +479,7 @@ public class TaskGroupContainer extends AbstractContainer {
                             PluginType.READER);
 
                     RecordSender recordSender;
+                    //判断使用哪种exchange 带转换Transformer的和正常的
                     if (transformerInfoExecs != null && transformerInfoExecs.size() > 0) {
                         recordSender = new BufferedRecordTransformerExchanger(taskGroupId, this.taskId, this.channel,this.taskCommunication ,pluginCollector, transformerInfoExecs);
                     } else {

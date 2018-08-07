@@ -1,0 +1,80 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel": 1
+      },
+      "errorLimit": {
+        "record": 0
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "streamreader",
+          "parameter": {
+            "column": [
+              {
+                "value": "DataX",
+                "type": "string"
+              },
+              {
+                "value": 19890604,
+                "type": "long"
+              },
+              {
+                "value": "1989-06-04 00:00:00",
+                "type": "date"
+              },
+              {
+                "value": true,
+                "type": "bool"
+              },
+              {
+                "value": "test",
+                "type": "bytes"
+              }
+            ],
+            "sliceRecordCount": 100000
+          }
+        },
+        "writer": {
+          "name": "streamwriter",
+          "parameter": {
+            "print": false,
+            "encoding": "UTF-8"
+          }
+        },
+        "transformer": [
+          {
+            "name": "dx_substr",
+            "parameter":
+            {
+              "columnIndex":5,
+              "paras":["1","3"]
+            }
+          },
+          {
+            "name": "dx_replace",
+            "parameter":
+            {
+              "columnIndex":4,
+              "paras":["3","4","****"]
+            }
+          },
+          {
+            "name": "dx_groovy",
+            "parameter":
+            {
+              "code": "//groovy code//",
+              "extraPackage":[
+                "import somePackage1;",
+                "import somePackage2;"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

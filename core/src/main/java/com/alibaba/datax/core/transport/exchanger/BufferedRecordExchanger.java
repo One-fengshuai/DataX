@@ -126,13 +126,13 @@ public class BufferedRecordExchanger implements RecordSender, RecordReceiver {
 		if(shutdown){
 			throw DataXException.asDataXException(CommonErrorCode.SHUT_DOWN_TASK, "");
 		}
-		boolean isEmpty = (this.bufferIndex >= this.buffer.size());
+		boolean isEmpty = (this.bufferIndex >= this.buffer.size()); //为空的话就去拉去数据，陷入等待
 		if (isEmpty) {
 			receive();
 		}
 
 		Record record = this.buffer.get(this.bufferIndex++);
-		if (record instanceof TerminateRecord) {
+		if (record instanceof TerminateRecord) {//reader结束标志
 			record = null;
 		}
 		return record;
