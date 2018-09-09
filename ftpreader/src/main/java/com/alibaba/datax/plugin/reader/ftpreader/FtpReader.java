@@ -153,15 +153,15 @@ public class FtpReader extends Reader {
 
 		private <T> List<List<T>> splitSourceFiles(final List<T> sourceList, int adviceNumber) {
 			List<List<T>> splitedList = new ArrayList<List<T>>();
-			int averageLength = sourceList.size() / adviceNumber;
-			averageLength = averageLength == 0 ? 1 : averageLength;
+			int averageLength = sourceList.size() / adviceNumber;//1
+			averageLength = averageLength == 0 ? 1 : averageLength;//1
 
 			for (int begin = 0, end = 0; begin < sourceList.size(); begin = end) {
 				end = begin + averageLength;
 				if (end > sourceList.size()) {
 					end = sourceList.size();
 				}
-				splitedList.add(sourceList.subList(begin, end));
+				splitedList.add(sourceList.subList(begin, end));//0,1
 			}
 			return splitedList;
 		}

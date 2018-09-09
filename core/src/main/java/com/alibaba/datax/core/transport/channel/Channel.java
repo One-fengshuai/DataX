@@ -52,7 +52,7 @@ public abstract class Channel {
         int capacity = configuration.getInt(
                 CoreConstant.DATAX_CORE_TRANSPORT_CHANNEL_CAPACITY, 2048);
         long byteSpeed = configuration.getLong(
-                CoreConstant.DATAX_CORE_TRANSPORT_CHANNEL_SPEED_BYTE, 1024 * 1024);
+                CoreConstant.DATAX_CORE_TRANSPORT_CHANNEL_SPEED_BYTE, 1024 * 1024);//channel限制的速度1Mb/S
         long recordSpeed = configuration.getLong(
                 CoreConstant.DATAX_CORE_TRANSPORT_CHANNEL_SPEED_RECORD, 10000);
 
@@ -132,11 +132,14 @@ public abstract class Channel {
 //                currentCommunication.getLongCounter(CommunicationTool.STAGE) + 1);
     }
 
+     /**
+       *@描述 reader发送数据到缓存队列
+     */
     public void pushAll(final Collection<Record> rs) {
         Validate.notNull(rs);
         Validate.noNullElements(rs);
         this.doPushAll(rs);
-        this.statPush(rs.size(), this.getByteSize(rs));
+        this.statPush(rs.size(), this.getByteSize(rs));//限速在此处
     }
 
     public Record pull() {
@@ -185,7 +188,7 @@ public abstract class Channel {
 
         boolean isChannelByteSpeedLimit = (this.byteSpeed > 0);
         boolean isChannelRecordSpeedLimit = (this.recordSpeed > 0);
-        if (!isChannelByteSpeedLimit && !isChannelRecordSpeedLimit) {
+        if (!isChannelByteSpeedLimit && !isChannelRecordSpeedLimit) {//判断core.json中是否配置了限速参数byte record
             return;
         }
 

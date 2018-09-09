@@ -419,15 +419,16 @@ public class JobContainer extends AbstractContainer {
         int needChannelNumberByByte = Integer.MAX_VALUE;
         int needChannelNumberByRecord = Integer.MAX_VALUE;
 
+        //判断job是否配置了speed_byte,然后获取这个值
         boolean isByteLimit = (this.configuration.getInt(
-                CoreConstant.DATAX_JOB_SETTING_SPEED_BYTE, 0) > 0);
+                CoreConstant.DATAX_JOB_SETTING_SPEED_BYTE, 0) > 0);//获取job配置的 job.setting.speed.byte
         if (isByteLimit) {
             long globalLimitedByteSpeed = this.configuration.getInt(
-                    CoreConstant.DATAX_JOB_SETTING_SPEED_BYTE, 10 * 1024 * 1024);
+                    CoreConstant.DATAX_JOB_SETTING_SPEED_BYTE, 10 * 1024 * 1024);//获取配置的 job.setting.speed.byte  10MB/s
 
             // 在byte流控情况下，单个Channel流量最大值必须设置，否则报错！
             Long channelLimitedByteSpeed = this.configuration
-                    .getLong(CoreConstant.DATAX_CORE_TRANSPORT_CHANNEL_SPEED_BYTE);
+                    .getLong(CoreConstant.DATAX_CORE_TRANSPORT_CHANNEL_SPEED_BYTE);//全局配置 core.transport.channel.speed.byte
             if (channelLimitedByteSpeed == null || channelLimitedByteSpeed <= 0) {
                 DataXException.asDataXException(
                         FrameworkErrorCode.CONFIG_ERROR,
@@ -435,14 +436,14 @@ public class JobContainer extends AbstractContainer {
             }
 
             needChannelNumberByByte =
-                    (int) (globalLimitedByteSpeed / channelLimitedByteSpeed);
+                    (int) (globalLimitedByteSpeed / channelLimitedByteSpeed);//job_speed/core_speed
             needChannelNumberByByte =
                     needChannelNumberByByte > 0 ? needChannelNumberByByte : 1;
             LOG.info("Job set Max-Byte-Speed to " + globalLimitedByteSpeed + " bytes.");
         }
 
         boolean isRecordLimit = (this.configuration.getInt(
-                CoreConstant.DATAX_JOB_SETTING_SPEED_RECORD, 0)) > 0;
+                CoreConstant.DATAX_JOB_SETTING_SPEED_RECORD, 0)) > 0;//job.setting.speed.record
         if (isRecordLimit) {
             long globalLimitedRecordSpeed = this.configuration.getInt(
                     CoreConstant.DATAX_JOB_SETTING_SPEED_RECORD, 100000);
@@ -458,7 +459,7 @@ public class JobContainer extends AbstractContainer {
                     (int) (globalLimitedRecordSpeed / channelLimitedRecordSpeed);
             needChannelNumberByRecord =
                     needChannelNumberByRecord > 0 ? needChannelNumberByRecord : 1;
-            LOG.info("Job set Max-Record-Speed to " + globalLimitedRecordSpeed + " records.");
+            LOG.info("Job set Max-Record-Speed to " + globalLimitedRecordSpeed + " records.");//每个channel最大的数目
         }
 
         // 取较小值
@@ -471,10 +472,10 @@ public class JobContainer extends AbstractContainer {
         }
 
         boolean isChannelLimit = (this.configuration.getInt(
-                CoreConstant.DATAX_JOB_SETTING_SPEED_CHANNEL, 0) > 0);
+                CoreConstant.DATAX_JOB_SETTING_SPEED_CHANNEL, 0) > 0);//job.setting.speed.channel
         if (isChannelLimit) {
             this.needChannelNumber = this.configuration.getInt(
-                    CoreConstant.DATAX_JOB_SETTING_SPEED_CHANNEL);
+                    CoreConstant.DATAX_JOB_SETTING_SPEED_CHANNEL);//获取任务配置的channel
 
             LOG.info("Job set Channel-Number to " + this.needChannelNumber
                     + " channels.");
@@ -498,13 +499,14 @@ public class JobContainer extends AbstractContainer {
         int channelsPerTaskGroup = this.configuration.getInt(
                 CoreConstant.DATAX_CORE_CONTAINER_TASKGROUP_CHANNEL, 5);
         int taskNumber = this.configuration.getList(
-                CoreConstant.DATAX_JOB_CONTENT).size();
+                CoreConstant.DATAX_JOB_CONTENT).size();//获取总的任务数目   此处代表split后,jobContent数组的数目
 
-        this.needChannelNumber = Math.min(this.needChannelNumber, taskNumber);
+        this.needChannelNumber = Math.min(this.needChannelNumber, taskNumber);//job.setting.speed.channel ==needChannelNumber
         PerfTrace.getInstance().setChannelNumber(needChannelNumber);
 
         /**
          * 通过获取配置信息得到每个taskGroup需要运行哪些tasks任务
+         * 总任务书/配置的任务组数目  获取需要定义几个taskGroupConfigs
          */
         List<Configuration> taskGroupConfigs = JobAssignUtil.assignFairly(this.configuration,
                 this.needChannelNumber, channelsPerTaskGroup);

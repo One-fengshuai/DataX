@@ -2,7 +2,7 @@
   "job": {
     "setting": {
       "speed": {
-        "channel":1
+        "channel":15
       }
     },
     "content": [
@@ -15,6 +15,22 @@
             "connection": [
               {
                 "querySql": [
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
+                  "select id,username,telephone from user;",
                   "select id,username,telephone from user;",
                   "select id,username,telephone from user_copy;"
                 ],

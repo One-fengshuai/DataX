@@ -127,14 +127,14 @@ public final class JobAssignUtil {
      * </pre>
      */
     private static List<Configuration> doAssign(LinkedHashMap<String, List<Integer>> resourceMarkAndTaskIdMap, Configuration jobConfiguration, int taskGroupNumber) {
-        List<Configuration> contentConfig = jobConfiguration.getListConfiguration(CoreConstant.DATAX_JOB_CONTENT);
+        List<Configuration> contentConfig = jobConfiguration.getListConfiguration(CoreConstant.DATAX_JOB_CONTENT);//任务个数
 
         Configuration taskGroupTemplate = jobConfiguration.clone();
         taskGroupTemplate.remove(CoreConstant.DATAX_JOB_CONTENT);
 
         List<Configuration> result = new LinkedList<Configuration>();
 
-        List<List<Configuration>> taskGroupConfigList = new ArrayList<List<Configuration>>(taskGroupNumber);
+        List<List<Configuration>> taskGroupConfigList = new ArrayList<List<Configuration>>(taskGroupNumber);//group个数
         for (int i = 0; i < taskGroupNumber; i++) {
             taskGroupConfigList.add(new LinkedList<Configuration>());
         }
