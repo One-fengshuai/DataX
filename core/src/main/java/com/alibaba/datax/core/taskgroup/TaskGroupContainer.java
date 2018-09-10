@@ -197,7 +197,8 @@ public class TaskGroupContainer extends AbstractContainer {
                             FrameworkErrorCode.PLUGIN_RUNTIME_ERROR, lastTaskGroupContainerCommunication.getThrowable());
                 }
                 
-                //3.有任务未执行，且正在运行的任务数小于最大通道限制
+                //3.有任务未执行，且正在运行的任务数小于最大通道限制   taskGroup.channel   默认并发是5个
+                //每一个TaskGroup负责以一定的并发运行(TaskExecutor)完毕分配好的所有Task，默认单个任务组的并发数量为5。
                 Iterator<Configuration> iterator = taskQueue.iterator();
                 while(iterator.hasNext() && runTasks.size() < channelNumber){
                     Configuration taskConfig = iterator.next();

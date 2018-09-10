@@ -412,9 +412,36 @@ public class JobContainer extends AbstractContainer {
 
         this.configuration.set(CoreConstant.DATAX_JOB_CONTENT, contentConfig);
 
-        return contentConfig.size();
+        return contentConfig.size();//切分后  content[多个[reader-writer],[reader-writer],...]
     }
 
+    /**
+     * 1-获取job配置的 job.setting.speed.byte
+     如果配置了这个参数且有效的话，接着获取全局配置 core.transport.channel.speed.byte
+     然后计算根据byte计算出需要的channelNumber
+     needChannelNumberByByte =
+     (int) (globalLimitedByteSpeed / channelLimitedByteSpeed);//job_speed/core_speed
+
+     2-接着获取job配置的job.setting.speed.record
+     如果配置了这个参数且有效的话，接着获取全局配置 core.transport.channel.speed.record
+     然后根据record计算出需要的channelNumber
+     needChannelNumberByRecord =
+     (int) (globalLimitedRecordSpeed / channelLimitedRecordSpeed);
+
+     然后比较needChannelNumberByByte和needChannelNumberByRecord 取较小值为最终的needChannelNumber
+     this.needChannelNumber = needChannelNumberByByte < needChannelNumberByRecord ?
+     needChannelNumberByByte : needChannelNumberByRecord;
+
+     3-如果配置了job.setting.speed.byte或者也配置job.setting.speed.record，
+     则此时可以退出返回上面获取到的needChannelNumber
+     if (this.needChannelNumber < Integer.MAX_VALUE) {
+     return;
+     }
+
+     4-如果没有配置则获取job配置的job.setting.speed.channel
+     用这个值直接等于needChannelNumber，然后返回
+     到此needChannelNumber获取完毕
+     * */
     private void adjustChannelNumber() {
         int needChannelNumberByByte = Integer.MAX_VALUE;
         int needChannelNumberByRecord = Integer.MAX_VALUE;
@@ -446,10 +473,10 @@ public class JobContainer extends AbstractContainer {
                 CoreConstant.DATAX_JOB_SETTING_SPEED_RECORD, 0)) > 0;//job.setting.speed.record
         if (isRecordLimit) {
             long globalLimitedRecordSpeed = this.configuration.getInt(
-                    CoreConstant.DATAX_JOB_SETTING_SPEED_RECORD, 100000);
+                    CoreConstant.DATAX_JOB_SETTING_SPEED_RECORD, 100000);//job.setting.speed.record
 
             Long channelLimitedRecordSpeed = this.configuration.getLong(
-                    CoreConstant.DATAX_CORE_TRANSPORT_CHANNEL_SPEED_RECORD);
+                    CoreConstant.DATAX_CORE_TRANSPORT_CHANNEL_SPEED_RECORD);//core.transport.channel.speed.record
             if (channelLimitedRecordSpeed == null || channelLimitedRecordSpeed <= 0) {
                 DataXException.asDataXException(FrameworkErrorCode.CONFIG_ERROR,
                         "在有总tps限速条件下，单个channel的tps值不能为空，也不能为非正数");
@@ -501,7 +528,7 @@ public class JobContainer extends AbstractContainer {
         int taskNumber = this.configuration.getList(
                 CoreConstant.DATAX_JOB_CONTENT).size();//获取总的任务数目   此处代表split后,jobContent数组的数目
 
-        this.needChannelNumber = Math.min(this.needChannelNumber, taskNumber);//job.setting.speed.channel ==needChannelNumber
+        this.needChannelNumber = Math.min(this.needChannelNumber, taskNumber);//此处获取最小值变为needChannelNumber
         PerfTrace.getInstance().setChannelNumber(needChannelNumber);
 
         /**

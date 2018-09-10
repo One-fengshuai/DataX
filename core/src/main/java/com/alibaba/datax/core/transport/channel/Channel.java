@@ -176,6 +176,14 @@ public abstract class Channel {
         return size;
     }
 
+     /**
+       *@描述 限速的逻辑:
+       * 1- 获取到core.transport.channel.speed.byte和core.transport.channel.speed.record两个配置的参数值
+       * 2-判断是否大于0,如果两个都没有配置，则直接返回
+       * 3-根据byte计算出当前的速度，和配置的byte做比较，计算出需要休眠的时间
+       * 4-根据record计算出当前的速度，和配置的record做比较，计算出需要休眠的时间
+       * 5-获取休眠时间较大的值进行sleep.
+     */
     private void statPush(long recordSize, long byteSize) {
         currentCommunication.increaseCounter(CommunicationTool.READ_SUCCEED_RECORDS,
                 recordSize);
