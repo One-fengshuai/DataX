@@ -30,6 +30,13 @@ public class SingleTableSplitUtil {
     private SingleTableSplitUtil() {
     }
 
+     /**
+       *@描述 切分表的流程
+      * 只关注else里面的数据库mysql
+      *
+      *
+      *
+     */
     public static List<Configuration> splitSingleTable(
             Configuration configuration, int adviceNum) {
         List<Configuration> pluginParams = new ArrayList<Configuration>();

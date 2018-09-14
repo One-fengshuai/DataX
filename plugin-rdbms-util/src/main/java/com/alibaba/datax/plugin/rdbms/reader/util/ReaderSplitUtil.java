@@ -59,6 +59,11 @@ public final class ReaderSplitUtil {
 
                 String splitPk = originalSliceConfig.getString(Key.SPLIT_PK, null);
 
+                 /**
+                  * 1-判断是否配置了splitPk,如果没有配置则每个table都会当成一个任务，生成一个配置文件给任务运行使用
+                  * 2-如果配置了splitPk，如果只配了一个table，则重新计算eachTableShouldSplittedNumber=eachTableShouldSplittedNumber * 5;
+                  * 3-如果配置了多个table,eachTableShouldSplittedNumber不变，然后循环对每个表进行切分splitSingleTable
+                 */
                 //最终切分份数不一定等于 eachTableShouldSplittedNumber
                 boolean needSplitTable = eachTableShouldSplittedNumber > 1
                         && StringUtils.isNotBlank(splitPk);

@@ -384,7 +384,7 @@ public class JobContainer extends AbstractContainer {
      * 然后，为避免顺序给读写端带来长尾影响，将整合的结果shuffler掉
      */
     private int split() {
-        this.adjustChannelNumber();
+        this.adjustChannelNumber();//根据配置计算出needChannelNumber
 
         if (this.needChannelNumber <= 0) {
             this.needChannelNumber = 1;
