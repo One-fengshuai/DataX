@@ -16,6 +16,7 @@
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <encoder>UTF-8</encoder>
+        <!-- 日志格式看自己的需要可以修改，如果log.file.name是唯一的可以不加后缀-->
         <file>${log.dir}/${ymd}/${log.file.name}-${byMillionSecond}.log</file>
         <append>false</append>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">

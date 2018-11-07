@@ -1,0 +1,61 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel":1
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "root123",
+            "connection": [
+              {
+                "querySql": [
+                  "select id,username,telephone,mail from user;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://localhost:3306/datax"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "hdfswriter",
+          "parameter": {
+            "defaultFS": "hdfs://hadoop001:8020",
+            "fileType": "TEXT",
+            "path": "/user/hive/warehouse/mysql_to_hive",
+            "fileName": "mysql_to_hive",
+            "column": [
+              {
+                "name": "id",
+                "type": "STRING"
+              },
+              {
+                "name": "username",
+                "type": "STRING"
+              },
+              {
+                "name": "telephone",
+                "type": "STRING"
+              },
+              {
+                "name": "mail",
+                "type": "STRING"
+              }
+            ],
+            "writeMode": "append",
+            "fieldDelimiter": "\t",
+            "compress": "NONE"
+          }
+         }
+        }
+    ]
+  }
+
+}

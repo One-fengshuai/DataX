@@ -333,18 +333,18 @@ public class DFSUtil {
                 //TODO multy threads
                 InputSplit[] splits = in.getSplits(conf, 1);
 
-                RecordReader reader = in.getRecordReader(splits[0], conf, Reporter.NULL);
+                RecordReader reader = in.getRecordReader(splits[0], conf, Reporter.NULL);//获取reader
                 Object key = reader.createKey();
-                Object value = reader.createValue();
+                Object value = reader.createValue();// OrcStruct
                 // 获取列信息
                 List<? extends StructField> fields = inspector.getAllStructFieldRefs();
 
                 List<Object> recordFields;
-                while (reader.next(key, value)) {
+                while (reader.next(key, value)) {//next 读取数据到   value(OrcStruct)
                     recordFields = new ArrayList<Object>();
 
                     for (int i = 0; i <= columnIndexMax; i++) {
-                        Object field = inspector.getStructFieldData(value, fields.get(i));
+                        Object field = inspector.getStructFieldData(value, fields.get(i));//从 OrcStruct 数组中 返回对应列 数据
                         recordFields.add(field);
                     }
                     transportOneRecord(column, recordFields, recordSender,

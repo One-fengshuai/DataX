@@ -15,7 +15,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+ /**
 
+   *@描述    * 、HdfsWriter实现过程是：首先根据用户指定的path，
+  * 创建一个hdfs文件系统上不存在的临时目录，创建规则：path_随机；
+  * 然后将读取的文件写入这个临时目录；全部写入后再将这个临时目录下的文件移动到用户指定目录（在创建文件时保证文件名不重复）;
+  * 最后删除临时目录。如果在中间过程发生网络中断等情况造成无法与hdfs建立连接，需要用户手动删除已经写入的文件和临时目录。
+  */
 public class HdfsWriter extends Writer {
     public static class Job extends Writer.Job {
         private static final Logger LOG = LoggerFactory.getLogger(Job.class);
@@ -196,11 +202,17 @@ public class HdfsWriter extends Writer {
             hdfsHelper.closeFileSystem();
         }
 
+        /**
+         * 创建临时的文件目录
+         * 在临时文件目录下面创建根据配置的文件名创建临时的文件名称
+         * 保存到集合中
+         * 任务完成后，在job post方法中 重命名 并且删除临时的文件
+         * */
         @Override
         public List<Configuration> split(int mandatoryNumber) {
             LOG.info("begin do split...");
             List<Configuration> writerSplitConfigs = new ArrayList<Configuration>();
-            String filePrefix = fileName;
+            String filePrefix = fileName;//：HdfsWriter写入时的文件名，实际执行时会在该文件名后添加随机的后缀作为每个线程写入实际文件名。
 
             Set<String> allFiles = new HashSet<String>();
 
@@ -210,9 +222,9 @@ public class HdfsWriter extends Writer {
             }
 
             String fileSuffix;
-            //临时存放路径
+            //临时存放路径，临时的目录
             String storePath =  buildTmpFilePath(this.path);
-            //最终存放路径
+            //最终存放路径, 追加 ‘/'
             String endStorePath = buildFilePath();
             this.path = endStorePath;
             for (int i = 0; i < mandatoryNumber; i++) {
@@ -224,9 +236,10 @@ public class HdfsWriter extends Writer {
 
                 fileSuffix = UUID.randomUUID().toString().replace('-', '_');
 
-                fullFileName = String.format("%s%s%s__%s", defaultFS, storePath, filePrefix, fileSuffix);
-                endFullFileName = String.format("%s%s%s__%s", defaultFS, endStorePath, filePrefix, fileSuffix);
+                fullFileName = String.format("%s%s%s__%s", defaultFS, storePath, filePrefix, fileSuffix);// 临时存储的文件路径
+                endFullFileName = String.format("%s%s%s__%s", defaultFS, endStorePath, filePrefix, fileSuffix);//最终存储文件路径
 
+                //保证不能有重复的文件名
                 while (allFiles.contains(endFullFileName)) {
                     fileSuffix = UUID.randomUUID().toString().replace('-', '_');
                     fullFileName = String.format("%s%s%s__%s", defaultFS, storePath, filePrefix, fileSuffix);
@@ -286,6 +299,7 @@ public class HdfsWriter extends Writer {
          */
         private String buildTmpFilePath(String userPath) {
             String tmpFilePath;
+            //判断用户配置的 path 是否以'/' 结尾
             boolean isEndWithSeparator = false;
             switch (IOUtils.DIR_SEPARATOR) {
                 case IOUtils.DIR_SEPARATOR_UNIX:
@@ -300,7 +314,7 @@ public class HdfsWriter extends Writer {
                     break;
             }
             String tmpSuffix;
-            tmpSuffix = UUID.randomUUID().toString().replace('-', '_');
+            tmpSuffix = UUID.randomUUID().toString().replace('-', '_');//随机产生 后缀
             if (!isEndWithSeparator) {
                 tmpFilePath = String.format("%s__%s%s", userPath, tmpSuffix, IOUtils.DIR_SEPARATOR);
             }else if("/".equals(userPath)){
@@ -308,6 +322,7 @@ public class HdfsWriter extends Writer {
             }else{
                 tmpFilePath = String.format("%s__%s%s", userPath.substring(0,userPath.length()-1), tmpSuffix, IOUtils.DIR_SEPARATOR);
             }
+            //保证hdfs文件系统不存在
             while(hdfsHelper.isPathexists(tmpFilePath)){
                 tmpSuffix = UUID.randomUUID().toString().replace('-', '_');
                 if (!isEndWithSeparator) {

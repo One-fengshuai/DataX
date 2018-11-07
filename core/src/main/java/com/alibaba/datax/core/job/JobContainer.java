@@ -392,7 +392,7 @@ public class JobContainer extends AbstractContainer {
 
         //具体执行任务切分的地方 setting.speed.channel
         List<Configuration> readerTaskConfigs = this
-                .doReaderSplit(this.needChannelNumber);
+                .doReaderSplit(this.needChannelNumber);//建议切分的数量，不一定会使用这个值进行切分
         int taskNumber = readerTaskConfigs.size();
         List<Configuration> writerTaskConfigs = this
                 .doWriterSplit(taskNumber);
