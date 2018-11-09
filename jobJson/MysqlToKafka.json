@@ -1,0 +1,39 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel":1
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "root123",
+            "connection": [
+              {
+                "querySql": [
+                  "select * from user;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://localhost:3306/datax"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "kafkawriter",
+          "parameter": {
+            "topic": "test-topic",
+            "bootstrapServers": "192.168.88.129:9092",
+            "fieldDelimiter":","
+          }
+        }
+        }
+    ]
+  }
+
+}

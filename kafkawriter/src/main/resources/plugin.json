@@ -1,0 +1,6 @@
+{
+    "name": "kafkawriter",
+    "class": "com.alibaba.datax.plugin.writer.kafkawriter.KafkaWriter",
+    "description": "简单插件，有待测试验证.  原理: TODO",
+    "developer": "lizu"
+}

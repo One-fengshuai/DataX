@@ -394,6 +394,7 @@ public class JobContainer extends AbstractContainer {
         List<Configuration> readerTaskConfigs = this
                 .doReaderSplit(this.needChannelNumber);//建议切分的数量，不一定会使用这个值进行切分
         int taskNumber = readerTaskConfigs.size();
+        //有几个reader 配置就需要几个writer配置，因为配置文件 是一一对应的。
         List<Configuration> writerTaskConfigs = this
                 .doWriterSplit(taskNumber);
 
