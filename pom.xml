@@ -76,6 +76,7 @@
         <module>hbase11xsqlwriter</module>
         <module>elasticsearchwriter</module>
         <module>kafkawriter</module>
+        <module>hivereader</module>
         <!-- common support module -->
         <module>plugin-rdbms-util</module>
         <module>plugin-unstructured-storage-util</module>

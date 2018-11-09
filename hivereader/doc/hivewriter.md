@@ -1,15 +1,15 @@
-# DataX KafkaWriter
+# DataX HiveReader
 
 
 ---
 
 ## 1 快速介绍
 
-数据导入kafka的插件
+通过hive sql 导出数据
 
 ## 2 实现原理
 
-使用kafka的kafka-clients  maven依赖 api接口， 批量把从reader读入的数据写入kafka
+
 
 ## 3 功能说明
 
@@ -47,20 +47,11 @@
 
 #### 3.2 参数说明
 
-* topic
- * 描述：kafka的主题
+* xxxx
+ * 描述：xxxx
  * 必选：是
  * 默认值：无
  
-* bootstrapServers 
-  * 描述：kafka broker地址
-  * 必选：是
-  * 默认值
-
-* fieldDelimiter
- * 描述：如果插入数据是array，就使用指定分隔符
- * 必选：否
- * 默认值：-,-
 
 
 ## 4 性能报告
