@@ -118,7 +118,7 @@ public class JobContainer extends AbstractContainer {
                 LOG.info("jobContainer starts to do schedule ...");
                 this.schedule();
                 LOG.debug("jobContainer starts to do post ...");
-                this.post();
+                this.post();//全局的post(reader writer)
 
                 LOG.debug("jobContainer starts to do postHandle ...");
                 this.postHandle();

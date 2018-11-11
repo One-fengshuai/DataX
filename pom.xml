@@ -46,7 +46,6 @@
 
         <!-- reader -->
         <module>mysqlreader</module>
-        <module>drdsreader</module>
         <module>sqlserverreader</module>
         <module>postgresqlreader</module>
         <module>oraclereader</module>
@@ -58,10 +57,10 @@
         <module>rdbmsreader</module>
         <module>hbase11xreader</module>
         <module>hbase094xreader</module>
+        <module>hbase11xsqlreader</module>
 
         <!-- writer -->
         <module>mysqlwriter</module>
-        <module>drdswriter</module>
         <module>txtfilewriter</module>
         <module>ftpwriter</module>
         <module>hdfswriter</module>

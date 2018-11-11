@@ -12,23 +12,22 @@
             <directory>src/main/resources</directory>
             <includes>
                 <include>plugin.json</include>
-                <include>plugin_job_template.json</include>
             </includes>
-            <outputDirectory>plugin/reader/drdsreader</outputDirectory>
+            <outputDirectory>plugin/reader/hivereader</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/</directory>
             <includes>
-                <include>drdsreader-0.0.1-SNAPSHOT.jar</include>
+                <include>hivereader-0.0.1-SNAPSHOT.jar</include>
             </includes>
-            <outputDirectory>plugin/reader/drdsreader</outputDirectory>
+            <outputDirectory>plugin/reader/hivereader</outputDirectory>
         </fileSet>
     </fileSets>
 
     <dependencySets>
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
-            <outputDirectory>plugin/reader/drdsreader/libs</outputDirectory>
+            <outputDirectory>plugin/reader/hivereader/libs</outputDirectory>
             <scope>runtime</scope>
         </dependencySet>
     </dependencySets>

@@ -61,14 +61,16 @@ TBLPROPERTIES (
     "content": [
       {
         "reader": {
-          ...
+          "name": "hivereader",
+          "parameter": {
+              "hiveSql": [
+                    "select username,telephone,mail from mysql_to_hive;"
+               ],
+              "defaultFS": "hdfs://xxx:port"
+           }
         },
         "writer": {
-          "name": "hivewriter",
-          "parameter": {
-            "hivesql": "select * from t_tmp",
-            "defaultFS": "hdfs://xxx:port"
-          }
+          ......
         }
         }
     ]
@@ -79,12 +81,18 @@ TBLPROPERTIES (
 
 #### 3.2 参数说明
 
-* xxxx
- * 描述：xxxx
+* hiveSql
+ * 描述：需要执行导出的sql，可以是多个
  * 必选：是
  * 默认值：无
- 
 
+* defaultFS 
+ * 描述：Hadoop hdfs文件系统namenode节点地址。
+ * 必选：是
+ * 默认值：无
+#### 3.3 环境准备
+* hadoop fs -mkdir /user/datax_tmp 先创建临时目录，否则会报错(临时hive 表使用) TODO 后期在代码中处理
+* 执行datax任务的机器要按照hive,并且配置好环境变量
 
 ## 4 性能报告
 
