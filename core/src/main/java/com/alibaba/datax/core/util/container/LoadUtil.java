@@ -139,6 +139,7 @@ public class LoadUtil {
      * @return
      */
     public static AbstractRunner loadPluginRunner(PluginType pluginType, String pluginName) {
+        //TODO 尝试改为 获取多个writer插件
         AbstractTaskPlugin taskPlugin = LoadUtil.loadTaskPlugin(pluginType,
                 pluginName);
 

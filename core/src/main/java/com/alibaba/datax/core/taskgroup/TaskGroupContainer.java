@@ -496,7 +496,7 @@ public class TaskGroupContainer extends AbstractContainer {
                     break;
                 case WRITER:
                     newRunner = LoadUtil.loadPluginRunner(pluginType,
-                            this.taskConfig.getString(CoreConstant.JOB_WRITER_NAME));
+                            this.taskConfig.getString(CoreConstant.JOB_WRITER_NAME));//根据插件名称加载
                     newRunner.setJobConf(this.taskConfig
                             .getConfiguration(CoreConstant.JOB_WRITER_PARAMETER));
 

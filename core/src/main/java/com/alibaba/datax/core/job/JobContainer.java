@@ -105,20 +105,21 @@ public class JobContainer extends AbstractContainer {
                 LOG.info("jobContainer starts to do preCheck ...");
                 this.preCheck();
             } else {
+                //处理  多个 writer 的情况
                 userConf = configuration.clone();
                 LOG.debug("jobContainer starts to do preHandle ...");
                 this.preHandle();//不配置会直接返回Null
 
                 LOG.debug("jobContainer starts to do init ...");
-                this.init();
+                this.init();//job加载插件信息
                 LOG.info("jobContainer starts to do prepare ...");
-                this.prepare();
+                this.prepare();//job prepare
                 LOG.info("jobContainer starts to do split ...");
-                this.totalStage = this.split();
+                this.totalStage = this.split();//job split
                 LOG.info("jobContainer starts to do schedule ...");
-                this.schedule();
+                this.schedule();//task
                 LOG.debug("jobContainer starts to do post ...");
-                this.post();//全局的post(reader writer)
+                this.post();//job 全局的post(reader writer)
 
                 LOG.debug("jobContainer starts to do postHandle ...");
                 this.postHandle();
