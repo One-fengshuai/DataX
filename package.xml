@@ -259,5 +259,12 @@
             </includes>
             <outputDirectory>datax</outputDirectory>
         </fileSet>
+        <fileSet>
+            <directory>hivewriter/target/datax/</directory>
+            <includes>
+                <include>**/*.*</include>
+            </includes>
+            <outputDirectory>datax</outputDirectory>
+        </fileSet>
     </fileSets>
 </assembly>

@@ -63,7 +63,8 @@ public class KafkaWriter extends Writer {
             //按照reader 配置文件的格式  来 组织相同个数的writer配置文件
             List<Configuration> configurations = new ArrayList<Configuration>(mandatoryNumber);
             for (int i = 0; i < mandatoryNumber; i++) {
-                configurations.add(conf);
+                Configuration splitedTaskConfig = this.conf.clone();
+                configurations.add(splitedTaskConfig);
             }
             return configurations;
         }

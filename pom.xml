@@ -58,7 +58,7 @@
         <module>hbase11xreader</module>
         <module>hbase094xreader</module>
         <module>hbase11xsqlreader</module>
-
+        <module>hivereader</module>
         <!-- writer -->
         <module>mysqlwriter</module>
         <module>txtfilewriter</module>
@@ -75,7 +75,7 @@
         <module>hbase11xsqlwriter</module>
         <module>elasticsearchwriter</module>
         <module>kafkawriter</module>
-        <module>hivereader</module>
+        <module>hivewriter</module>
         <!-- common support module -->
         <module>plugin-rdbms-util</module>
         <module>plugin-unstructured-storage-util</module>

@@ -336,8 +336,9 @@ Hive建库／建表语法 参考 [Hive操作手册]( https://cwiki.apache.org/co
 
 例：
 （1）建立存储为textfile文件类型的表
-```json
+````
 create database IF NOT EXISTS hdfswriter;
+
 use hdfswriter;
 create table text_table(
 col1  TINYINT,
@@ -356,11 +357,11 @@ col12 TIMESTAMP
 row format delimited
 fields terminated by "\t"
 STORED AS TEXTFILE;
-```
+````
 text_table在hdfs上存储路径为：/user/hive/warehouse/hdfswriter.db/text_table/
 
 （2）建立存储为orcfile文件类型的表
-```json
+````
 create database IF NOT EXISTS hdfswriter;
 use hdfswriter;
 create table orc_table(
@@ -379,7 +380,7 @@ col12 TIMESTAMP
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
 STORED AS ORC;
-```
+````
 orc_table在hdfs上存储路径为：/user/hive/warehouse/hdfswriter.db/orc_table/
 
 * 步骤二、根据步骤一的配置信息配置HdfsWriter作业
