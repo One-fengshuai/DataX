@@ -186,6 +186,7 @@ public class LoadUtil {
         JarLoader jarLoader = jarLoaderCenter.get(generatePluginKey(pluginType,
                 pluginName));
         if (null == jarLoader) {
+            //"path": "D:\\app\\workspace\\idea\\DataX\\target\\datax\\datax\\plugin\\reader\\mysqlreader"
             String pluginPath = pluginConf.getString("path");
             if (StringUtils.isBlank(pluginPath)) {
                 throw DataXException.asDataXException(
