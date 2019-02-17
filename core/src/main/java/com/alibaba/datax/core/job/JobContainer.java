@@ -418,6 +418,11 @@ public class JobContainer extends AbstractContainer {
     }
 
     /**
+     * 概念:
+     * 计算切分的task数量,根据全局限制和job的限制进行计算
+     * job:针对整个job做限制
+     * core:针对job里面每个task里面的channel做限制
+     *
      * 1-获取job配置的 job.setting.speed.byte
      如果配置了这个参数且有效的话，接着获取全局配置 core.transport.channel.speed.byte
      然后计算根据byte计算出需要的channelNumber
@@ -535,7 +540,7 @@ public class JobContainer extends AbstractContainer {
 
         /**
          * 通过获取配置信息得到每个taskGroup需要运行哪些tasks任务
-         * 总任务书/配置的任务组数目  获取需要定义几个taskGroupConfigs
+         * 总任务数/配置的任务组数目  获取需要定义几个taskGroupConfigs
          */
         List<Configuration> taskGroupConfigs = JobAssignUtil.assignFairly(this.configuration,
                 this.needChannelNumber, channelsPerTaskGroup);
