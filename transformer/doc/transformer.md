@@ -230,3 +230,33 @@ Total 1000000 records, 22000000 bytes | Transform 100000 records(in), 10000 reco
 ```
 
 **注意，这里主要记录转换的输入输出，需要检测数据输入输出的记录数量变化。**
+
+````
+dx_replace
+任务启动时刻                    : 2019-03-06 10:58:57
+任务结束时刻                    : 2019-03-06 10:59:21
+任务总计耗时                    :                 24s
+任务平均流量                    :          263.57KB/s
+记录写入速度                    :          11735rec/s
+读出记录总数                    :              234717
+读写失败总数                    :                   0
+
+10:59:21.557 [job-0] INFO  c.a.datax.core.job.JobContainer - 
+Transformer成功记录总数         :              234717
+Transformer失败记录总数         :                   0
+Transformer过滤记录总数         :                   0
+
+dx_filter
+任务启动时刻                    : 2019-03-06 12:09:51
+任务结束时刻                    : 2019-03-06 12:10:02
+任务总计耗时                    :                 11s
+任务平均流量                    :                0B/s
+记录写入速度                    :              0rec/s
+读出记录总数                    :                   1
+读写失败总数                    :                   0
+
+12:10:02.371 [job-0] INFO  c.a.datax.core.job.JobContainer - 
+Transformer成功记录总数         :                   2
+Transformer失败记录总数         :                   0
+Transformer过滤记录总数         :                   1
+````

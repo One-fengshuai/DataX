@@ -1,0 +1,6 @@
+{
+    "name": "mysqlloadwriter",
+    "class": "com.alibaba.datax.plugin.writer.mysqlloadwriter.MysqlLoadWriter",
+    "description": "简单插件，有待测试验证.  原理: TODO",
+    "developer": "lizu"
+}

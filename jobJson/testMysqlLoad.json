@@ -1,0 +1,51 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel":15
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "root123",
+            "connection": [
+              {
+                "querySql": [
+                  "select id,username,telephone from user_copy;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://loaclhost:3306/test"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "mysqlloadwriter",
+          "parameter": {
+            "writeMode": "IGNORE",
+            "username": "root",
+            "password": "root123",
+            "column": [
+              "username",
+              "telephone",
+              "mail"
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:mysql://localhost:3306/datax",
+                "table": [
+                  "user_copyy"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

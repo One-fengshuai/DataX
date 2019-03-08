@@ -76,6 +76,7 @@
         <module>elasticsearchwriter</module>
         <module>kafkawriter</module>
         <module>hivewriter</module>
+        <module>mysqlloadwriter</module>
         <!-- common support module -->
         <module>plugin-rdbms-util</module>
         <module>plugin-unstructured-storage-util</module>

@@ -5,9 +5,7 @@ import com.alibaba.datax.common.element.Record;
 import com.alibaba.datax.common.plugin.RecordReceiver;
 import com.alibaba.datax.common.spi.Writer;
 import com.alibaba.datax.common.util.Configuration;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +67,6 @@ public class KafkaWriter extends Writer {
             return configurations;
         }
 
-
         @Override
         public void post() {
 
@@ -115,6 +112,11 @@ public class KafkaWriter extends Writer {
 
         }
 
+        /**
+         *
+         * 开始写入kafka,不指定key,使用默认轮训的分区策略
+         *
+         * */
         @Override
         public void startWrite(RecordReceiver lineReceiver) {
 
@@ -122,8 +124,9 @@ public class KafkaWriter extends Writer {
             Record record = null;
             while ((record = lineReceiver.getFromReader()) != null) {//说明还在读取数据,或者读取的数据没处理完
                 //获取一行数据，按照指定分隔符 拼成字符串 发送出去
+                long startTime = System.currentTimeMillis();
                 producer.send(new ProducerRecord<String, String>(this.conf.getString(Key.TOPIC),
-                        recordToString(record), recordToString(record)));
+                        recordToString(record)),new WriterCallback(startTime));
 
             }
         }
@@ -154,7 +157,30 @@ public class KafkaWriter extends Writer {
             return sb.toString();
         }
 
-    }
 
+        class WriterCallback implements Callback {
+
+            private final Logger logger = LoggerFactory.getLogger(WriterCallback.class);
+
+            private long startTime;
+
+            public WriterCallback(long startTime) {
+                this.startTime = startTime;
+            }
+
+            public void onCompletion(RecordMetadata metadata, Exception exception) {
+                if (exception != null) {
+                    logger.error("Error sending message to Kafka {} ", exception.getMessage());
+                }
+
+                if (logger.isDebugEnabled()) {
+                    long eventElapsedTime = System.currentTimeMillis() - startTime;
+                    logger.debug("Acked message partition:{} ofset:{}",  metadata.partition(), metadata.offset());
+                    logger.debug("Elapsed time for send: {}", eventElapsedTime);
+                }
+            }
+        }
+
+    }
 
 }

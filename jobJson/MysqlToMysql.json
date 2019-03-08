@@ -15,24 +15,7 @@
             "connection": [
               {
                 "querySql": [
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user;",
-                  "select id,username,telephone from user_copy;"
+                  "select id,username,telephone from user1;"
                 ],
                 "jdbcUrl": [
                   "jdbc:mysql://localhost:3306/datax"
@@ -47,7 +30,17 @@
             "print": true,
             "encoding": "UTF-8"
           }
-        }
+        },
+        "transformer": [
+          {
+            "name": "dx_filter",
+            "parameter":
+            {
+              "columnIndex":1,
+              "paras":["like","lizu"]
+            }
+          }
+        ]
       }
     ]
   }

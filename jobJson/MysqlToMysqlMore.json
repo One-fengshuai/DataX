@@ -1,0 +1,59 @@
+{
+  "job": {
+    "setting": {
+      "speed": {
+        "channel":15
+      }
+    },
+    "content": [
+      {
+        "reader": {
+          "name": "mysqlreader",
+          "parameter": {
+            "username": "root",
+            "password": "root123",
+            "connection": [
+              {
+                "querySql": [
+                  "select id,username,telephone from user1;",
+                  "select id,username,telephone from user_hive_mysql;"
+                ],
+                "jdbcUrl": [
+                  "jdbc:mysql://localhost:3306/datax"
+                ]
+              }
+            ]
+          }
+        },
+        "writer": {
+          "name": "mysqlwriter",
+          "parameter": {
+            "writeMode": "insert",
+            "username": "root",
+            "password": "root123",
+            "column": [
+              "username",
+              "telephone",
+              "mail"
+            ],
+            "session": [
+              "set session sql_mode='ANSI'"
+            ],
+            "preSql": [
+              ""
+            ],
+            "connection": [
+              {
+                "jdbcUrl": "jdbc:mysql://localhost:3306/datax",
+                "table": [
+                  "user2",
+                  "user3"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
