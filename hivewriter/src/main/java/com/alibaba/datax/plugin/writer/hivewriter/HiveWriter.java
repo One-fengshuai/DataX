@@ -82,7 +82,7 @@ public class HiveWriter extends Writer{
                         "truncate table "+tableName+";";
                 log.info("prepareCmd ----> :" + prepareCmd);
 
-                //执行脚本,创建临时表
+                //执行脚本,前置清空表操作
                 if (!ShellUtil.exec(new String[]{"hive", "-e", "\"" + prepareCmd + "\""})) {
                     throw DataXException.asDataXException(
                             HiveWriterErrorCode.SHELL_ERROR,
@@ -96,14 +96,15 @@ public class HiveWriter extends Writer{
         @Override
         public List<Configuration> split(int mandatoryNumber) {
             this.defaultFS = this.conf.getString(Key.DEFAULT_FS);
-            //按照reader 配置文件的格式  来 组织相同个数的writer配置文件
+            //按照reader 切分的情况来组织相同个数的writer配置文件  (reader channel writer)
             List<Configuration> configurations = new ArrayList<Configuration>(mandatoryNumber);
 
             for (int i = 0; i < mandatoryNumber; i++) {
 
                 Configuration splitedTaskConfig = this.conf.clone();
 
-                tmpPath = Constants.TMP_PREFIX + KeyUtil.genUniqueKey();//创建临时Hive表 存储地址
+                //创建临时Hive表,指定hive表在hdfs上的存储路径
+                tmpPath = Constants.TMP_PREFIX + KeyUtil.genUniqueKey();
 
                 this.tmpTableName=hiveTableName();
 
